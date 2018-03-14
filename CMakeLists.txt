@@ -130,6 +130,13 @@ set(DYNAMIC_LIB
     z
     )
 
+if(BRPC_WITH_GLOG)
+  set(DYNAMIC_LIB
+      ${DYNAMIC_LIB}
+      ${GLOG_LIB}
+      )
+endif()
+
 # for *.so
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/lib)
 # for *.a

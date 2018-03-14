@@ -33,6 +33,8 @@
 #if BRPC_WITH_GLOG
 # include <glog/logging.h>
 # include <glog/raw_logging.h>
+#define LOG_AT(severity, file, line)                             \
+    ::google::LogMessage(file, line, google::GLOG_##severity).stream()
 // define macros that not implemented in glog
 # ifndef DCHECK_IS_ON   // glog didn't define DCHECK_IS_ON in older version
 #  if defined(NDEBUG)
