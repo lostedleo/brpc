@@ -14,6 +14,7 @@
 #include <gflags/gflags.h>
 #include <butil/logging.h>
 #include <brpc/server.h>
+#include <butil/memory/scoped_ptr.h>
 
 #include "cache.pb.h"
 #include "cache.h"
@@ -27,13 +28,13 @@ DEFINE_int32(logoff_ms, 2000, "Maximum duration of server's LOGOFF state "
 DEFINE_int32(max_concurrency, 0, "Limit of request processing in parallel");
 DEFINE_int32(internal_port, -1, "Only allow builtin services at this port");
 
-push::Cache g_cache;
-
 namespace push {
 // Your implementation of CacheService
 class CacheServiceImpl : public CacheService {
  public:
-  CacheServiceImpl() {}
+  CacheServiceImpl(Cache* cache) : cache_(cache) {
+    assert(!cache_);
+  }
   ~CacheServiceImpl() {};
   void Get(google::protobuf::RpcController* controller,
            const GetRequest* request,
@@ -45,7 +46,7 @@ class CacheServiceImpl : public CacheService {
 
     response->set_status(Status::OK);
     auto values = response->mutable_values();
-    g_cache.Get(request->keys(), values);
+    cache_->Get(request->keys(), values);
     if (FLAGS_echo_attachment) {
       cntl->response_attachment().append(cntl->request_attachment());
     }
@@ -59,12 +60,15 @@ class CacheServiceImpl : public CacheService {
     brpc::Controller* cntl =
       static_cast<brpc::Controller*>(controller);
 
-    g_cache.Set(request->key_values());
+    cache_->Set(request->key_values());
     response->set_status(Status::OK);
     if (FLAGS_echo_attachment) {
       cntl->response_attachment().append(cntl->request_attachment());
     }
   }
+
+ private:
+  Cache*  cache_;
 };
 }  // namespace push
 
@@ -85,8 +89,9 @@ int main(int argc, char* argv[]) {
   // Generally you only need one Server.
   brpc::Server server;
 
+  scoped_ptr<push::Cache> cache(new push::Cache());
   // Instance of your service.
-  push::CacheServiceImpl cache_service_impl;
+  push::CacheServiceImpl cache_service_impl(cache.get());
 
   // Add the service into server. Notice the second parameter, because the
   // service is put on stack, we don't want server to delete it, otherwise
