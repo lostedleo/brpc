@@ -1,6 +1,9 @@
 licenses(["notice"])  # Apache v2
 
-exports_files(["LICENSE"])
+exports_files([
+    "LICENSE",
+    "CPPLINT.cfg"
+])
 
 load(":bazel/brpc.bzl", "brpc_proto_library")
 
