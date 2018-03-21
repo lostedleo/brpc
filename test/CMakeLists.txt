@@ -160,7 +160,7 @@ target_link_libraries(test_butil ${GTEST_LIB} ${GPERFTOOLS_LIBRARIES} ${DYNAMIC_
 file(GLOB BTHREAD_UNITTESTS "bthread*unittest.cpp")
 foreach(BTHREAD_UT ${BTHREAD_UNITTESTS})
     get_filename_component(BTHREAD_UT_WE ${BTHREAD_UT} NAME_WE)
-    add_executable(${BTHREAD_UT_WE} ${BTHREAD_UT} 
+    add_executable(${BTHREAD_UT_WE} ${BTHREAD_UT}
                                     $<TARGET_OBJECTS:TEST_PROTO_OBJ>
                                     $<TARGET_OBJECTS:BUTIL_LIB>
                                     $<TARGET_OBJECTS:OBJ_LIB>)

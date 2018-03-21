@@ -323,7 +323,7 @@ file(COPY ${CMAKE_CURRENT_BINARY_DIR}/idl_options.pb.h
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/output/include)
 file(COPY ${CMAKE_CURRENT_BINARY_DIR}/brpc/
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/output/include/brpc/
-        FILES_MATCHING 
+        FILES_MATCHING
         PATTERN "*.h"
         PATTERN "*.hpp"
         )

@@ -21,14 +21,14 @@ def brpc_workspace():
 
   native.new_http_archive(
       name = "com_github_google_leveldb",
-      build_file = str(Label("//:leveldb.BUILD")),
+      build_file = str(Label("//:bazel/third_party/leveldb.BUILD")),
       strip_prefix = "leveldb-a53934a3ae1244679f812d998a4f16f2c7f309a6",
       url = "https://github.com/google/leveldb/archive/a53934a3ae1244679f812d998a4f16f2c7f309a6.tar.gz"
   )
 
   native.new_http_archive(
       name = "com_github_google_glog",
-      build_file = str(Label("//:glog.BUILD")),
+      build_file = str(Label("//:bazel/third_party/glog.BUILD")),
       strip_prefix = "glog-a6a166db069520dbbd653c97c2e5b12e08a8bb26",
       url = "https://github.com/google/glog/archive/a6a166db069520dbbd653c97c2e5b12e08a8bb26.tar.gz"
   )
